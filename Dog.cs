@@ -3,7 +3,7 @@
 public class Dog
 {
     private int _racetrackLength;
-    private int _location;
+    public int Location { get; set; }
 
     private Random _randomizer = new();
 
@@ -14,13 +14,13 @@ public class Dog
 
     public bool Run()
     {
-        _location += _randomizer.Next(1, 5);
-        return _location >= _racetrackLength;
+        Location += _randomizer.Next(1, 5);
+        return Location >= _racetrackLength;
     }
 
     public void TakeStartingPosition()
     {
-        _location = 0;
+        Location = 0;
     }
 
     public override string ToString()

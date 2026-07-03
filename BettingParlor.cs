@@ -1,6 +1,6 @@
 namespace DogsAtTheRaces;
 /**
- * This file is the replacement for the all UI systems
+ * This file is the replacement for all UI systems
  */
 
 
@@ -17,15 +17,20 @@ public class BettingParlor
 {
     private const int DogAmount = 4;
     private const int TrackLength =  100;
+    
     private const int MinimumBet = 5;
     private const int MaximumBet = 15;
     
-    private ParlorState _state = ParlorState.Betting;
-    
+    private const double ProgressBarSize = 30.0;
+
+
+    private readonly System.Timers.Timer _raceTick;
     private readonly List<Guy> _guys;
     private readonly List<Dog> _dogs;
+    
+    private int _winner;
 
-    private System.Timers.Timer _raceTick;
+    private ParlorState _state = ParlorState.Betting;
     
     public BettingParlor(List<Guy> guys)
     {
@@ -39,6 +44,7 @@ public class BettingParlor
 
         _raceTick = new System.Timers.Timer(1000);
         _raceTick.Elapsed += OnRaceTick;
+        _raceTick.AutoReset = true;
     }
 
     public void Start()
@@ -64,8 +70,9 @@ public class BettingParlor
 
     private void Betting()
     {
+        Console.Clear();
         char input = Input(
-            "Choose an option",
+            "Options",
             new CommandEntry('b', "Bet"),
             new CommandEntry('s', "Start race")
         );
@@ -85,17 +92,62 @@ public class BettingParlor
 
     private void Racing()
     {
-        
+        if (!_raceTick.Enabled)
+        {
+            foreach (Dog dog in _dogs)
+            {
+                dog.TakeStartingPosition();
+            }
+            _raceTick.Start();
+        }
+        Console.ReadLine();
     }
 
     private void Payout()
     {
-        
+        PrintDogs();
+        Console.WriteLine($"Dog {_winner} won!");
+        foreach (Guy guy in _guys)
+        {
+            guy.Collect(_winner);
+        }
+        _state = ParlorState.Betting;
     }
 
     private void OnRaceTick(object? sender, EventArgs e)
     {
-        
+        Console.WriteLine(DateTime.Now);
+        for (int i = 0; i < _dogs.Count; i++)
+        {
+            if (!_dogs[i].Run()) continue;
+            
+            _raceTick.Stop();
+            _state = ParlorState.Payout;
+            _winner = i;
+            Console.WriteLine("Race ended! Press enter to continue..");
+            return;
+        }
+        PrintDogs();
+    }
+
+    private void PrintDogs()
+    {
+        Console.Clear();
+        for (int i = 0; i < _dogs.Count; i++)
+        {
+            Dog dog = _dogs[i];
+            string bar = $"Dog {i + 1} - [";
+
+            const double stepSize = TrackLength / ProgressBarSize;
+            int steps = (int)(dog.Location / stepSize);
+
+            for (int j = 0; j < ProgressBarSize; j++)
+            {
+                bar += j + 1 > steps ? '-' : '=';
+            }
+
+            Console.WriteLine(bar + ']');
+        }
     }
 
     private void Bet()
