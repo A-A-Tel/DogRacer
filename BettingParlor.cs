@@ -1,8 +1,4 @@
 namespace DogsAtTheRaces;
-/**
- * This file is the replacement for all UI systems
- */
-
 
 public enum ParlorState
 {
@@ -11,8 +7,15 @@ public enum ParlorState
     Payout
 }
 
+/**
+ * A record to standardize command registration
+ */
 public record CommandEntry(char Input, string Description);
 
+/**
+ * This class has been refactored to fit a CLI environment.
+ * It is easily configurable by modifying the const values.
+ */
 public class BettingParlor
 {
     private const int DogAmount = 4;
