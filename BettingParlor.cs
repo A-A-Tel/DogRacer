@@ -16,12 +16,12 @@ public record CommandEntry(char Input, string Description);
 public class BettingParlor
 {
     private const int DogAmount = 4;
-    private const int TrackLength =  100;
+    private const int TrackLength =  35;
     
     private const int MinimumBet = 5;
     private const int MaximumBet = 15;
     
-    private const double ProgressBarSize = 30.0;
+    private const double ProgressBarSize = 25.0;
 
 
     private readonly System.Timers.Timer _raceTick;
@@ -98,6 +98,7 @@ public class BettingParlor
             {
                 dog.TakeStartingPosition();
             }
+            PrintDogs();
             _raceTick.Start();
         }
         Console.ReadLine();
@@ -106,24 +107,26 @@ public class BettingParlor
     private void Payout()
     {
         PrintDogs();
-        Console.WriteLine($"Dog {_winner} won!");
+        Console.WriteLine($"Dog {_winner + 1} won!");
         foreach (Guy guy in _guys)
         {
             guy.Collect(_winner);
         }
         _state = ParlorState.Betting;
+        Console.WriteLine("Press enter to continue..");
+        Console.ReadLine();
     }
 
     private void OnRaceTick(object? sender, EventArgs e)
     {
-        Console.WriteLine(DateTime.Now);
         for (int i = 0; i < _dogs.Count; i++)
         {
             if (!_dogs[i].Run()) continue;
-            
+
+            _winner = i;
             _raceTick.Stop();
             _state = ParlorState.Payout;
-            _winner = i;
+            
             Console.WriteLine("Race ended! Press enter to continue..");
             return;
         }
@@ -209,7 +212,7 @@ public class BettingParlor
         Console.WriteLine(title);
         for (int i = 0; i < items.Count; i++)
         {
-            Console.WriteLine($"[{i}] - {items[i]}");
+            Console.WriteLine($"[{i + 1}] - {items[i]}");
         }
 
         int input;
@@ -218,6 +221,7 @@ public class BettingParlor
         { 
             Console.WriteLine("Choose a valid option");
             success = int.TryParse(Console.ReadLine(), out input);
+            input -= 1;
             ClearLine();
         } while (!success || input < 0 || input >= items.Count);
 

@@ -28,7 +28,8 @@ public class Guy
 
     public void Collect(int winner)
     {
-        
+        if (_bet is null) return;
+        _money += _bet.Payout(winner);
     }
 
     public override string ToString()
