@@ -2,18 +2,16 @@
 
 public class Guy
 {
-    public string Name { get; private set; }
+    public string Name { get; }
 
-    public int Money => _money;
+    public int Money { get; private set; }
 
-    private int _money;
-    
     private Bet? _bet;
 
     public Guy(string name, int money)
     {
         Name = name;
-        _money = money;
+        Money = money;
     }
 
     public void ClearBet()
@@ -29,7 +27,7 @@ public class Guy
     public void Collect(int winner)
     {
         if (_bet is null) return;
-        _money += _bet.Payout(winner);
+        Money += _bet.Payout(winner);
         ClearBet();
     }
 
