@@ -28,7 +28,6 @@ public class Guy
     {
         if (_bet is null) return;
         Money += _bet.Payout(winner);
-        ClearBet();
     }
 
     public override string ToString()

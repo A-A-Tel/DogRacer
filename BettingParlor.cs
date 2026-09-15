@@ -120,6 +120,7 @@ public class BettingParlor
         foreach (Guy guy in _guys)
         {
             guy.Collect(_winner);
+            guy.ClearBet();
         }
         _state = ParlorState.Betting;
         Console.WriteLine("Press enter to continue..");
