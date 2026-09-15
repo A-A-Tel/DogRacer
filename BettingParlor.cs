@@ -36,9 +36,13 @@ public class BettingParlor
 
     private ParlorState _state = ParlorState.Betting;
     
-    public BettingParlor(List<Guy> guys)
+    public BettingParlor()
     {
-        _guys = guys;
+        _guys = [
+            new Guy("Joe", 50),
+            new Guy("Bob", 75),
+            new Guy("Al", 45)
+        ];
 
         Random randomizer = new();
         _dogs = [];
