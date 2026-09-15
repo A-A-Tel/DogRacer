@@ -23,13 +23,14 @@ public class Guy
 
     public void PlaceBet(int amount, int dogIndex)
     {
-        _bet = new Bet(amount, dogIndex, ref _money, this);
+        _bet = new Bet(amount, dogIndex, this);
     }
 
     public void Collect(int winner)
     {
         if (_bet is null) return;
         _money += _bet.Payout(winner);
+        ClearBet();
     }
 
     public override string ToString()

@@ -7,11 +7,10 @@ public class Bet
     
     private readonly Guy _bettor;
 
-    public Bet(int amount, int dogIndex, ref int balance, Guy bettor)
+    public Bet(int amount, int dogIndex, Guy bettor)
     {
         _amount = amount;
         _dogIndex = dogIndex;
-        balance -= amount;
         _bettor = bettor;
     }
 
@@ -22,7 +21,7 @@ public class Bet
 
     public int Payout(int winner)
     {
-        return winner == _dogIndex ? _amount * 2 : 0;
+        return winner == _dogIndex ? _amount * 2 : -_amount;
     }
 
     public override string ToString()
