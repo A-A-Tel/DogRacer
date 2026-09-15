@@ -21,7 +21,7 @@ public class Bet
 
     public int Payout(int winner)
     {
-        return winner == _dogIndex ? _amount * 2 : -_amount;
+        return winner == _dogIndex ? _amount : -_amount;
     }
 
     public override string ToString()
