@@ -5,11 +5,12 @@ public class Dog
     private int _racetrackLength;
     public int Location { get; set; }
 
-    private Random _randomizer = new();
+    private Random _randomizer;
 
-    public Dog(int racetrackLength)
+    public Dog(int racetrackLength, Random randomizer)
     {
         _racetrackLength = racetrackLength;
+        _randomizer = randomizer;
     }
 
     public bool Run()

@@ -18,13 +18,14 @@ public record CommandEntry(char Input, string Description);
  */
 public class BettingParlor
 {
-    private const int DogAmount = 4;
-    private const int TrackLength =  35;
+    private const int DogAmount = 5;
+    private const int TrackLength =  70;
     
     private const int MinimumBet = 5;
     private const int MaximumBet = 15;
-    
-    private const double ProgressBarSize = 25.0;
+
+    private const int RaceTickInterval = 1000;
+    private const double ProgressBarSize = 47.0;
 
 
     private readonly System.Timers.Timer _raceTick;
@@ -39,13 +40,14 @@ public class BettingParlor
     {
         _guys = guys;
 
+        Random randomizer = new();
         _dogs = [];
         for (int i = 0; i < DogAmount; i++)
         {
-            _dogs.Add(new Dog(TrackLength));
+            _dogs.Add(new Dog(TrackLength, randomizer));
         }
 
-        _raceTick = new System.Timers.Timer(1000);
+        _raceTick = new System.Timers.Timer(RaceTickInterval);
         _raceTick.Elapsed += OnRaceTick;
         _raceTick.AutoReset = true;
     }
